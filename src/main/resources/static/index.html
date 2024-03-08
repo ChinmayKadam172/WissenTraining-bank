@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Student Management</title>
+	</head>
+	<body>
+		<h1>Student Management System</h1>
+
+		<h2>Add Student</h2>
+		<form id="addStudentForm">
+			<label for="rollNo">Roll No:</label>
+			<input type="number" id="rollNo" name="rollNo" required /><br />
+
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name" required /><br />
+
+			<label for="standard">Standard:</label>
+			<input type="number" id="standard" name="standard" required /><br />
+
+			<label for="school">School:</label>
+			<input type="text" id="school" name="school" required /><br />
+
+			<label for="percentage">Percentage:</label>
+			<input type="number" id="percentage" name="percentage" required /><br />
+
+			<button type="button" onclick="addStudent()">Add Student</button>
+		</form>
+
+		<h2>Get All Students</h2>
+		<button type="button" onclick="getAllStudents()">Get All Students</button>
+
+		<script>
+			function addStudent() {
+				var form = document.getElementById("addStudentForm");
+				var formData = new FormData(form);
+
+				fetch("http://localhost:8080/student", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(Object.fromEntries(formData)),
+				})
+					.then((response) => response.text())
+					.then((data) => console.log(data))
+					.catch((error) => console.error("Error:", error));
+			}
+
+			function getAllStudents() {
+				const username = "SYS";
+				const password = "SYSTEM";
+
+				fetch("http://localhost:8080/students", {
+					method: "GET",
+					headers: {
+						Authorization: "Basic " + btoa(username + ":" + password),
+					},
+				})
+					.then((response) => response.json())
+					.then((data) => console.log(data))
+					.catch((error) => console.error("Error:", error));
+			}
+		</script>
+	</body>
+</html>
